@@ -32,17 +32,28 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 io.on('connection', function(socket){ 
-  console.log("---------------------"); 
   socket.on('chat message', function(data){
     console.log("www received");
     io.emit('chat message', {
       userName: data.userName,
       msgContent: data.msgContent,
       msgTime: moment().format('YYYY-MM-DD HH:mm:ss') });
-    // stmt.run(userName, msg);
-    // db.each("SELECT rowid AS id, userName, msgContent, msgTime FROM ChatHistory", function(err, row) {
-    //   console.log(row.id + ": " + row.userName+ '   ' + row.msgContent + '   ' + row.msgTime);
-    // });
+      var fs = require("fs");
+      var file = "chat.db";
+      var exists = fs.existsSync(file);
+      if(!exists) {
+        console.log("Creating DB file.");
+        fs.openSync(file, "w");
+      }
+
+      //Create the chat-history Table
+      var sqlite3 = require("sqlite3").verbose();
+      var db = new sqlite3.Database(file);
+      var stmt = db.prepare("INSERT INTO ChatHistory (userName, msgContent) VALUES (?, ?)");
+      stmt.run(data.userName, data.msgContent);
+      stmt.finalize();
+      db.close();
+      
   });
 });
 
