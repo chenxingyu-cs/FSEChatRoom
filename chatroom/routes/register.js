@@ -37,6 +37,8 @@ db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", functio
   console.log(row.id + ": " + row.userName+ '   ' + row.account + '   ' + row.password);
 });
 db.close();
+
+res.render('login', { title: 'login' });
 });
 
 
