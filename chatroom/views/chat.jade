@@ -2,4 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #{title} #{username}
+  div
+    ul(id="messages")
+    form(action="" id="chatform")
+      input(id="chatmessages", autocomplete="off")
+      button send
+      
+
