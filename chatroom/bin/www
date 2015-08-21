@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('chatroom:server');
 var http = require('http');
+var moment = require('moment');
+
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +22,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+var io = require('socket.io')(server);
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -28,6 +30,21 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+io.on('connection', function(socket){ 
+  console.log("---------------------"); 
+  socket.on('chat message', function(msg){
+    console.log("www received");
+    io.emit('chat message', {
+      userName: "userName",
+      msgContent: msg,
+      msgTime: moment().format('YYYY-MM-DD HH:mm:ss') });
+    // stmt.run(userName, msg);
+    // db.each("SELECT rowid AS id, userName, msgContent, msgTime FROM ChatHistory", function(err, row) {
+    //   console.log(row.id + ": " + row.userName+ '   ' + row.msgContent + '   ' + row.msgTime);
+    // });
+  });
+});
 
 /**
  * Normalize a port into a number, string, or false.
