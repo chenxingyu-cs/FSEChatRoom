@@ -31,7 +31,9 @@ router.post('/', function(req, res) {
     if(row.num != 0){
       if(row.password == req.body.password){
         console.log(row.userId + ': ' + row.userName + " which psw is: " + row.password);
-        res.render('chat', { title: 'success', username: row.userName });
+        res.cookie('username','cxy')
+        // res.render('chat', { title: 'success', username: row.userName });
+        res.redirect('/chat');
       }else{
         console.log("psw wrong");
       }

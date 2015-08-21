@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  h1= title
+  h1= title 
   p Welcome to #{title} #{username}
+  p=username
   div
     ul(id="messages")
     form(action="" id="chatform")
@@ -10,8 +11,8 @@ block content
       button Send
 
   script(type='text/javascript').
-    var username = #{username}
-    alert(username);
+    var userName =  !{JSON.stringify(username)};
+    alert(userName);
     var socket = io();
     socket.on('chat message', function(data){
       var text = data.userName + ': ' + data.msgContent + '     ' + data.msgTime;
