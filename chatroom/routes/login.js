@@ -31,7 +31,8 @@ router.post('/', function(req, res) {
     if(row.num != 0){
       if(row.password == req.body.password){
         console.log(row.userId + ': ' + row.userName + " which psw is: " + row.password);
-        res.cookie('username','cxy')
+        res.clearCookie('username');
+        res.cookie('username',row.userName, { expires: new Date(Date.now() + 900000), httpOnly: true });
         // res.render('chat', { title: 'success', username: row.userName });
         res.redirect('/chat');
       }else{
