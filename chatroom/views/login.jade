@@ -9,23 +9,24 @@ block content
     input(id="password", name="password", autocomplete="off")
     input(type='submit',value='Sign in')
 
-div
-  form(action='/signup',method='post')
-    div(data-role='fieldcontain')
-      fieldset(data-role='controlgroup')
-        label(for='email') email
-           input(id='email',type='text',value='',placeholder='@',name='email')
-    div#passworddiv(data-role='fieldcontain')
-      fieldset(data-role='controlgroup')
-        label(for='password') password
-           input(id='password',type='password',value='',placeholder='',name='password')
-    div(id='hiddendiv',data-role='fieldcontain')
-      fieldset(data-role='controlgroup')
-        label(for='hidden_password') password
-           input(id='hidden_password',type='text',value='',placeholder='',name='password2')
-    div(data-role='fieldcontain')
-      fieldset(data-type='vertical', data-role='controlgroup')                                           
-       label(for='showpass') show password
-       input(id='showpass',type='checkbox')
-    div(data-role='fieldcontain')   
-      input(type='submit',value='Sign Up',data-transition='fade', data-theme='c')
+
+
+//- doctype html(lang='en')
+//- head
+//-     meta(charset='utf-8')
+         
+//-     meta(http-equiv='X-UA-Compatible', content='IE=edge')
+         
+//-     meta(name='viewport', content='width=device-width, initial-scale=1')
+//-     // The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+//-     title Bootstrap 101 Template
+//-     // Bootstrap
+//-     link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+
+     
+//-   body
+//-     h1 Hello, world!
+//-     // jQuery (necessary for Bootstrap's JavaScript plugins)
+//-     script(src='/javascripts/jquery-2.1.4.min.js')
+//-     // Include all compiled plugins (below), or include individual files as needed
+//-     script(src='/javascripts/bootstrap.min.js')
