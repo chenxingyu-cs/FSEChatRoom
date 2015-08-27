@@ -33,7 +33,7 @@ router.post('/', function(req, res) {
   console.log("register received");
   stmtRegister.run(req.body.username, req.body.account, req.body.password);
   stmtRegister.finalize();
-db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", function(err, row) {
+  db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", function(err, row) {
   console.log(row.id + ": " + row.userName+ '   ' + row.account + '   ' + row.password);
 });
 db.close();

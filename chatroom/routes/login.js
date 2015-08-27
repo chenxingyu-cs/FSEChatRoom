@@ -27,7 +27,7 @@ router.post('/', function(req, res) {
       db.run("CREATE TABLE UserInfo ( userId INTEGER PRIMARY KEY, userName TEXT, account TEXT, password TEXT, lastLoginTime DATETIME DEFAULT CURRENT_TIMESTAMP)");
     }  
   });
-  db.each("SELECT count(*) as num, userId, userName, password FROM UserInfo where account ='" +req.body.account + "'" , function(err, row) {
+  db.each("SELECT count(*) as num, userId, userName, password, lastLoginTime FROM UserInfo where account ='" +req.body.account + "'" , function(err, row) {
     if(row.num != 0){
       if(row.password == req.body.password){
         console.log(row.userId + ': ' + row.userName + " which psw is: " + row.password);
@@ -35,6 +35,12 @@ router.post('/', function(req, res) {
         res.cookie('username',row.userName, { expires: new Date(Date.now() + 900000), httpOnly: true });
         // res.render('chat', { title: 'success', username: row.userName });
         res.redirect('/chat');
+        
+        // io.emit('chat message', {
+        //   userName: data.userName,
+        //   msgContent: data.msgContent,
+        //   msgTime: moment().format('YYYY-MM-DD HH:mm:ss') 
+        // });
       }else{
         console.log("psw wrong");
       }
