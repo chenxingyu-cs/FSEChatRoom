@@ -1,17 +1,51 @@
 extends layout
 
 block content
-  h1= title 
-  p Welcome to #{title} #{username}
-  div
-    ul(id="messages")
-    form(action="" id="chatform")
-      input(id="chatmessages", autocomplete="off")
-      button Send
+  .container
+      .row
+        .col-md-5
+          .panel.panel-primary
+            .panel-heading
+              span.glyphicon.glyphicon-comment
+              |  Chat
+              .btn-group.pull-right
+                button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                  span.glyphicon.glyphicon-chevron-down
+                ul.dropdown-menu.slidedown
+                  li
+                    a(href='http://www.jquery2dotnet.com')
+                      span.glyphicon.glyphicon-refresh
+                      | Refresh
+                  li
+                    a(href='http://www.jquery2dotnet.com')
+                      span.glyphicon.glyphicon-ok-sign
+                      | Available
+                  li
+                    a(href='http://www.jquery2dotnet.com')
+                      span.glyphicon.glyphicon-remove
+                      | Busy
+                  li
+                    a(href='http://www.jquery2dotnet.com')
+                      span.glyphicon.glyphicon-time
+                      |                                 Away
+                  li.divider
+                  li
+                    a(href='http://www.jquery2dotnet.com')
+                      span.glyphicon.glyphicon-off
+                      |                                 Sign Out
+            .panel-body
+              ul#messages.chat
+                
+            .panel-footer
+              form(action="" id="chatform")
+                .input-group
+                  input#chatmessages.form-control.input-sm(type='text', placeholder='Type your message here...')
+                  span.input-group-btn
+                    button#btn-chat.btn.btn-warning.btn-sm
+                      | Send
 
   script(type='text/javascript').
     var userName =  !{JSON.stringify(username)};
-    alert(userName);
     var socket = io();
     window.onload = newUser();
 
@@ -20,8 +54,56 @@ block content
       socket.emit('new user in');
     }
     socket.on('chat message', function(data){
-      var text = data.userName + ': ' + data.msgContent + '        ' + data.msgTime;
-      $('#messages').append($('<li>').text(text)); 
+      //- var text = data.userName + ': ' + data.msgContent + '        ' + data.msgTime;
+      var nameTag = data.userName[0].toUpperCase();
+      if(data.userName == userName)
+      var text = '<li class="right clearfix">'
+      + '<span class="chat-img pull-right">'
+      + '<img src="http://placehold.it/50/FA6F57/fff&amp;text='
+      + nameTag
+      + '" alt="User Avatar" class="img-circle">'
+      + '</span>'
+      + '<div class="chat-body clearfix">'
+      + '<div class="header">'
+      + '<small class="text-muted">'
+      + '<span class="glyphicon glyphicon-time">'
+      + '</span>'
+      + data.msgTime
+      + '</small>'
+      + '<strong class="pull-right primary-font">'
+      + data.userName
+      + '</strong>'
+      + '</div>'
+      + '<p>'
+      + data.msgContent
+      + '</p>'
+      + '</div>'
+      + '</li>';
+      else
+      var text = '<li class="left clearfix">'
+      + '<span class="chat-img pull-left">'
+      + '<img src="http://placehold.it/50/55C1E7/fff&text='
+      + nameTag
+      + '" alt="User Avatar" class="img-circle">'
+      + '</span>'
+      + '<div class="chat-body clearfix">'
+      + '<div class="header">'
+      + '<strong class="primary-font">'
+      + data.userName
+      + '</strong>'
+      + '<small class="pull-right text-muted">'
+      + '<span class="glyphicon glyphicon-time">'
+      + '</span>'
+      + data.msgTime
+      + '</small>'
+      + '</div>'
+      + '<p>'
+      + data.msgContent
+      + '</p>'
+      + '</div>'
+      + '</li>';
+      $('#messages').append(text); 
+
     });
 
     $('#chatform').submit(function(){
