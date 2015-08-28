@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
   console.log("register received");
-  stmtRegister.run(req.body.username, req.body.account, req.body.password);
+  stmtRegister.run(req.body.registerUserName, req.body.registerAccount, req.body.registerPassword);
   stmtRegister.finalize();
   db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", function(err, row) {
   console.log(row.id + ": " + row.userName+ '   ' + row.account + '   ' + row.password);
