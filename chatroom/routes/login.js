@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
   console.log("login received");
+  console.log("FFFFFFFF"+req.body.signinAccount);
   var fs = require("fs");
   var file = "chat.db";
   var exists = fs.existsSync(file);
@@ -27,9 +28,9 @@ router.post('/', function(req, res) {
       db.run("CREATE TABLE UserInfo ( userId INTEGER PRIMARY KEY, userName TEXT, account TEXT, password TEXT, lastLoginTime DATETIME DEFAULT CURRENT_TIMESTAMP)");
     }  
   });
-  db.each("SELECT count(*) as num, userId, userName, password, lastLoginTime FROM UserInfo where account ='" +req.body.account + "'" , function(err, row) {
+  db.each("SELECT count(*) as num, userId, userName, password, lastLoginTime FROM UserInfo where account ='" +req.body.signinAccount + "'" , function(err, row) {
     if(row.num != 0){
-      if(row.password == req.body.password){
+      if(row.password == req.body.signinPassword){
         console.log(row.userId + ': ' + row.userName + " which psw is: " + row.password);
         res.clearCookie('username');
         res.cookie('username',row.userName, { expires: new Date(Date.now() + 900000), httpOnly: true });

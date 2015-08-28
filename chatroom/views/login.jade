@@ -4,10 +4,15 @@ block content
   h1= title
   p Welcome to #{title}
 
-  form(action = "",method = 'post')
-    input(id="account", name="account", autocomplete="off")
-    input(id="password", name="password", autocomplete="off")
-    input(type='submit',value='Sign in')
+  form(action = "", method = 'post', class="form-signin")
+    label.sr-only(for='signinAccount') Email address
+    input#signinAccount.form-control(type='text', name='signinAccount', placeholder='Account', required='', autofocus='')
+    label.sr-only(for='signinPassword') Password
+    input#signinPassword.form-control(type='password', name='signinPassword', placeholder='Password', required='')
+    //- input(id="account", name="account", autocomplete="off")
+    //- input(id="password", name="password", autocomplete="off")
+    //- input(type='submit',value='Sign in')
+    button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
 
 
 
