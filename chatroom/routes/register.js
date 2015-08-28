@@ -38,7 +38,7 @@ router.post('/', function(req, res) {
 });
 db.close();
 
-res.render('login', { title: 'login' });
+res.redirect('/login');
 });
 
 function getRandomColor() {
