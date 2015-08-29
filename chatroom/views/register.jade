@@ -1,14 +1,30 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  //- h1= title
+  //- p Welcome to #{title}
 
-  form(action = "", method = 'post', class="form-signin")
-    label.sr-only(for='registerAccount') Email address
-    input#registerAccount.form-control(type='text', name='registerAccount', placeholder='Account', required='', autofocus='')
-    label.sr-only(for='registerPassword') Password
-    input#registerPassword.form-control(type='password', name='registerPassword', placeholder='Password', required='')
-    label.sr-only(for='registerUserName') UserName
-    input#registerUserName.form-control(type='text', name='registerUserName', placeholder='UserName', required='')
-    button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+  //- form(action = "", method = 'post', class="form-signin")
+  //-   label.sr-only(for='registerAccount') Email address
+  //-   input#registerAccount.form-control(type='text', name='registerAccount', placeholder='Account', required='', autofocus='')
+  //-   label.sr-only(for='registerPassword') Password
+  //-   input#registerPassword.form-control(type='password', name='registerPassword', placeholder='Password', required='')
+  //-   label.sr-only(for='registerUserName') UserName
+  //-   input#registerUserName.form-control(type='text', name='registerUserName', placeholder='UserName', required='')
+  //-   button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+  .container
+      #pwd-container.row
+        .col-md-4
+        .col-md-4
+          section.login-form
+            form(method='post', action='#', role='login')
+              //- img.img-responsive(src='http://i.imgur.com/RcmcLv4.png', alt='')
+              legend #{title}
+              input#registerAccount.form-control.input-lg(type='text', name='registerAccount', placeholder='Account', required='', autofocus='')
+              input#registerUserName.form-control.input-lg(type='text', name='registerUserName', placeholder='NickName', required='')
+              input#registerPassword.form-control.input-lg(type='password', name='registerPassword', placeholder='Password', required='')
+              .pwstrength_viewport_progress
+              button.btn.btn-lg.btn-primary.btn-block(type='submit', name='go') Register
+
+                
+  

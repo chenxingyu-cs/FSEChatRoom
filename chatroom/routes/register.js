@@ -25,7 +25,7 @@ var stmtRegister = db.prepare("INSERT INTO UserInfo (userName, account, password
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('register', { title: 'register' });
+  res.render('register', { title: 'Register' });
 });
 
 router.post('/', function(req, res) {
