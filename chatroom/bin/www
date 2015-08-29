@@ -32,7 +32,8 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 io.on('connection', function(socket){ 
-  socket.on('new user in', function(data){
+
+  socket.on('get all msg', function(data){
     var fs = require("fs");
       var file = "chat.db";
       var exists = fs.existsSync(file);
@@ -46,7 +47,8 @@ io.on('connection', function(socket){
       var db = new sqlite3.Database(file);
 
       db.each("SELECT rowid AS id, userName, msgContent, msgTime, userColor FROM ChatHistory", function(err, row) {
-          io.emit('chat message', {
+          io.emit('refresh message', {
+            sentUserName: data.sentUserName,
             userName: row.userName,
             msgContent: row.msgContent,
             msgTime: row.msgTime,
