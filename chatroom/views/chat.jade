@@ -13,7 +13,7 @@ block content
                   span.glyphicon.glyphicon-chevron-down
                 ul.dropdown-menu.slidedown
                   li
-                    a(href='http://www.jquery2dotnet.com')
+                    a(href='http://www.jquery2dotnet.com' id="refreshChat")
                       span.glyphicon.glyphicon-refresh
                       | Refresh
                   //- li
@@ -116,6 +116,12 @@ block content
         msgContent: $('#chatmessages').val()
       });
       $('#chatmessages').val('');
+      return false;
+    });
+
+    $("#refreshChat").click(function() {
+      $("#messages").empty();
+      socket.emit('new user in');
       return false;
     });
 
