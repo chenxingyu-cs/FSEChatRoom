@@ -5,10 +5,6 @@ block content
   p Welcome to #{title}
 
   form(action = "", method = 'post', class="form-signin")
-    //- input(id="account", name="account", autocomplete="off")
-    //- input(id="password", name="password", autocomplete="off")
-    //- input(id="username", name="username", autocomplete="off")
-    //- input(type='submit',value='Sign Up')
     label.sr-only(for='registerAccount') Email address
     input#registerAccount.form-control(type='text', name='registerAccount', placeholder='Account', required='', autofocus='')
     label.sr-only(for='registerPassword') Password

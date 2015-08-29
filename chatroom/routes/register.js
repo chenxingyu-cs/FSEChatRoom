@@ -26,16 +26,15 @@ var stmtRegister = db.prepare("INSERT INTO UserInfo (userName, account, password
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.render('register', { title: 'register' });
-  console.log("register");
 });
 
 router.post('/', function(req, res) {
   console.log("register received");
   stmtRegister.run(req.body.registerUserName, req.body.registerAccount, req.body.registerPassword, getRandomColor().replace('#',''));
   stmtRegister.finalize();
-  db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", function(err, row) {
-  console.log(row.id + ": " + row.userName+ '   ' + row.account + '   ' + row.password);
-});
+//   db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", function(err, row) {
+//   console.log(row.id + ": " + row.userName+ '   ' + row.account + '   ' + row.password);
+// });
 db.close();
 
 res.redirect('/login');
