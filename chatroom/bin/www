@@ -101,18 +101,17 @@ io.on('connection', function(socket){
     var sqlite3 = require("sqlite3").verbose();
     var db = new sqlite3.Database(file);
 
-    db.each("SELECT userColor FROM UserInfo where userName ='" + data.userName + "'" , function(err, row) {  
-      var stmt = db.prepare("INSERT INTO ChatHistory (userName, msgContent, userColor) VALUES (?, ?, ?)");
-      stmt.run(data.userName, data.msgContent, row.userColor);
-      stmt.finalize();
-      db.close();    
-      io.emit('chat message', {
-        userName: data.userName,
-        msgContent: data.msgContent,
-        msgTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-        msgColor: row.userColor 
-      });  
-    })      
+    var stmt = db.prepare("INSERT INTO ChatHistory (userName, msgContent, userColor) VALUES (?, ?, ?)");
+    stmt.run(data.userName, data.msgContent, data.userColor);
+    stmt.finalize();
+    db.close();    
+    io.emit('chat message', {
+      userName: data.userName,
+      msgContent: data.msgContent,
+      msgTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      msgColor: data.userColor 
+    });  
+      
   });
 });
 

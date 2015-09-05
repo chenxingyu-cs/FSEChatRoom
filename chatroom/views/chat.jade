@@ -76,7 +76,8 @@ block content
     $('#chatform').submit(function(){
       socket.emit('chat message', {
         userName: userName,
-        msgContent: $('#chatmessages').val()
+        msgContent: $('#chatmessages').val(),
+        userColor: userColor
       });
       $('#chatmessages').val('');
       
