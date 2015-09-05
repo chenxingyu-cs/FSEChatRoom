@@ -71,6 +71,11 @@ block content
         msgContent: $('#chatmessages').val()
       });
       $('#chatmessages').val('');
+      //- alert(document.getElementById("messages").scrollHeight);
+      //- $('#messages').scrollTop(document.getElementById("messages").scrollHeight);
+      //- $('#messages').stop().animate({
+      //-   scrollTop: document.getElementById("messages").scrollHeight
+      //- }, 800);
       return false;
     });
 
