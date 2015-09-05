@@ -27,16 +27,19 @@ router.post('/', function(req, res) {
       db.run("CREATE TABLE UserInfo ( userId INTEGER PRIMARY KEY, userName TEXT, account TEXT, password TEXT, userColor TEXT)");
     }  
   });
-  db.each("SELECT count(*) as num, userId, userName, password FROM UserInfo where account ='" +req.body.signinAccount + "'" , function(err, row) {
+  db.each("SELECT count(*) as num, userId, userName, password, userColor FROM UserInfo where account ='" +req.body.signinAccount + "'" , function(err, row) {
     if(row.num != 0){
       if(row.password == req.body.signinPassword){
         req.session.regenerate(function(){
 
         req.session.userName = row.userName;
+        req.session.userId = row.userId;
+        req.session.userColor = row.userColor;
         req.session.success = 'Authenticated as ' 
           + ' click to <a href="/logout">logout</a>. '
           + ' You may now access <a href="/restricted">/restricted</a>.';
         res.redirect('/chat');
+
       });
 
       }else{

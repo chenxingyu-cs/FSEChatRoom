@@ -14,9 +14,12 @@ function restrict(req, res, next) {
 /* GET home page. */
 router.get('/', restrict, function(req, res, next) {
   console.log(req.cookies);
-  console.log("session ------------------ " + req.session.userName);
 
-  res.render('chat', { title: 'Chatroom', username: req.session.userName });
+  res.render('chat', { title: 'Chatroom', 
+    username: req.session.userName,
+    userid: req.session.userId,
+    usercolor: req.session.userColor,
+    });
 
 });
 

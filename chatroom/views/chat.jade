@@ -3,11 +3,12 @@ extends layout
 block content
   .container
       .row
+        .col-md-2
         .col-md-5
           .panel.panel-primary
             .panel-heading
               span.glyphicon.glyphicon-comment
-              |  Chat
+              |  FSE Chat Room
               .btn-group.pull-right
                 button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
                   span.glyphicon.glyphicon-chevron-down
@@ -16,21 +17,9 @@ block content
                     a(href='#' id="refreshChat")
                       span.glyphicon.glyphicon-refresh
                       | Refresh
-                  //- li
-                  //-   a(href='http://www.jquery2dotnet.com')
-                  //-     span.glyphicon.glyphicon-ok-sign
-                  //-     | Available
-                  //- li
-                  //-   a(href='http://www.jquery2dotnet.com')
-                  //-     span.glyphicon.glyphicon-remove
-                  //-     | Busy
-                  //- li
-                  //-   a(href='http://www.jquery2dotnet.com')
-                  //-     span.glyphicon.glyphicon-time
-                  //-     |                                 Away
                   li.divider
                   li
-                    a(href='/logout')
+                    a(href='/logout' id="logout")
                       span.glyphicon.glyphicon-off
                       |                                 Sign Out
             .panel-body
@@ -44,25 +33,44 @@ block content
                     button#btn-chat.btn.btn-warning.btn-sm
                       | Send
 
+        .col-md-3
+          .panel.panel-primary
+            .panel-heading
+              span.glyphicon.glyphicon-comment
+              |  Current Chat People
+
+            .panel-body
+              ul#chatters.chat
+                
+            .panel-footer
+
+
+
   script(type='text/javascript').
     var userName =  !{JSON.stringify(username)};
+    var userId =  !{JSON.stringify(userid)};
+    var userColor =  !{JSON.stringify(usercolor)};
     var socket = io();
     window.onload = newUser();
 
     function newUser()
     {
       socket.emit('get all msg', {sentUserName: userName});
+      socket.emit('user logged in', {userName: userName, userId: userId, userColor: userColor});
     }
     socket.on('chat message', function(data){
       //- var text = data.userName + ': ' + data.msgContent + '        ' + data.msgTime;
        addToUl(data);
 
     });
+
     socket.on('refresh message', function(data){
-      //- var text = data.userName + ': ' + data.msgContent + '        ' + data.msgTime;
        if(data.sentUserName == userName)
         addToUl(data);
+    });
 
+    socket.on('update chatters', function(data){
+       updateChatter(data);
     });
 
     $('#chatform').submit(function(){
@@ -71,11 +79,7 @@ block content
         msgContent: $('#chatmessages').val()
       });
       $('#chatmessages').val('');
-      //- alert(document.getElementById("messages").scrollHeight);
-      //- $('#messages').scrollTop(document.getElementById("messages").scrollHeight);
-      //- $('#messages').stop().animate({
-      //-   scrollTop: document.getElementById("messages").scrollHeight
-      //- }, 800);
+      
       return false;
     });
 
@@ -85,6 +89,33 @@ block content
       return false;
     });
 
+    $("#logout").click(function() {
+      socket.emit('user logged out', {userId: userId});
+    });
+
+    function updateChatter(data){
+        if(data.cnt == 0)
+          $("#chatters").empty();
+        var nameTag = data.userName[0].toUpperCase();
+        var text = '<li class="right clearfix">'
+        + '<span class="chat-img pull-right">'
+        + '<img src="http://placehold.it/50/'
+        + data.userColor
+        + '/fff&amp;text='
+        + nameTag
+        + '" alt="User Avatar" class="img-circle">'
+        + '</span>'
+        + '<div class="chat-body clearfix">'
+        + '<div class="header">'
+        + '<strong class="pull-right primary-font">'
+        + data.userName
+        + '</strong>'
+        + '</div>'
+        + '</div>'
+        + '</li>';
+        $('#chatters').append(text);     
+    }
+    
     function addToUl(data){
     var nameTag = data.userName[0].toUpperCase();
       if(data.userName == userName)

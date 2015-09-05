@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('chatroom:server');
 var http = require('http');
 var moment = require('moment');
+currentChatters = new Map();
 
 
 /**
@@ -32,6 +33,34 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 io.on('connection', function(socket){ 
+
+  
+  socket.on('user logged in', function(data){
+    // currentChatters.set(row.userId, {userName: row.userName, userColor: row.userColor});
+    currentChatters.set(data.userId, {userName: data.userName, userColor: data.userColor});
+    var cnt = 0;
+    currentChatters.forEach(function(value, key) {
+      io.emit('update chatters', {
+      userName: value.userName,
+      userColor: value.userColor,
+      cnt: cnt
+    });
+    cnt = cnt + 1;
+    }, currentChatters);
+  });
+
+  socket.on('user logged out', function(data){
+    currentChatters.delete(data.userId)
+    var cnt = 0;
+    currentChatters.forEach(function(value, key) {
+      io.emit('update chatters', {
+      userName: value.userName,
+      userColor: value.userColor,
+      cnt: cnt
+    });
+    cnt = cnt + 1;
+    }, currentChatters);
+  });
 
   socket.on('get all msg', function(data){
     var fs = require("fs");
