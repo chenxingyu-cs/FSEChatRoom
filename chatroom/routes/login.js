@@ -30,16 +30,8 @@ router.post('/', function(req, res) {
   db.each("SELECT count(*) as num, userId, userName, password FROM UserInfo where account ='" +req.body.signinAccount + "'" , function(err, row) {
     if(row.num != 0){
       if(row.password == req.body.signinPassword){
-        // console.log(row.userId + ': ' + row.userName + " which psw is: " + row.password);
-        // res.clearCookie('username');
-        // res.cookie('username',row.userName,  { expires: new Date(Date.now() + 900000), httpOnly: true });
-
-        // req.session.userName = row.userName;
-        // res.redirect('/chat');
         req.session.regenerate(function(){
-        // Store the user's primary key
-        // in the session store to be retrieved,
-        // or in this case the entire user object
+
         req.session.userName = row.userName;
         req.session.success = 'Authenticated as ' 
           + ' click to <a href="/logout">logout</a>. '
@@ -49,9 +41,11 @@ router.post('/', function(req, res) {
 
       }else{
         console.log("psw wrong");
+        res.render('login', { title: 'Login', err: 'You got a wrong Login password' });
       }
     }else{
       console.log("no account exits");
+      res.render('login', { title: 'Login', err: 'No such account exists' });
     }
   })
 

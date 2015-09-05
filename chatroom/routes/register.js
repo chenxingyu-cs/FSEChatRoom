@@ -29,15 +29,28 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res) {
-  console.log("register received");
-  stmtRegister.run(req.body.registerUserName, req.body.registerAccount, req.body.registerPassword, getRandomColor().replace('#',''));
-  stmtRegister.finalize();
+  db.get("SELECT COUNT(*) as cnt FROM UserInfo WHERE account = ?", [req.body.registerAccount], function(err, row){
+    if(err) throw err;
+    console.log(row.cnt);
+    if(row.cnt == 0){
+      console.log("register received");
+      stmtRegister.run(req.body.registerUserName, req.body.registerAccount, req.body.registerPassword, getRandomColor().replace('#',''));
+      stmtRegister.finalize();
+      db.close();
+      res.redirect('/login');
+    }
+    else{
+      stmtRegister.finalize();
+      db.close();
+      res.render('register', { title: 'Register', err: 'The same account exists' });
+    }
+  });
+
+  
 //   db.each("SELECT rowid AS id, userName, account, password FROM UserInfo", function(err, row) {
 //   console.log(row.id + ": " + row.userName+ '   ' + row.account + '   ' + row.password);
 // });
-db.close();
 
-res.redirect('/login');
 });
 
 function getRandomColor() {
